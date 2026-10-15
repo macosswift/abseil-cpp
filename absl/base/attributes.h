@@ -808,13 +808,11 @@
 //
 // See also the upstream documentation:
 // https://clang.llvm.org/docs/AttributeReference.html#lifetimebound
-#if ABSL_HAVE_CPP_ATTRIBUTE(clang::lifetimebound)
-#define ABSL_ATTRIBUTE_LIFETIME_BOUND [[clang::lifetimebound]]
-#elif ABSL_HAVE_ATTRIBUTE(lifetimebound)
-#define ABSL_ATTRIBUTE_LIFETIME_BOUND __attribute__((lifetimebound))
-#else
+// Patched: defined empty for compatibility with newer clang (Xcode 26.x),
+// which rejects [[clang::lifetimebound]] on a parameter of a void-returning
+// function as a hard error. The attribute is only a static-analysis aid, so
+// removing it has no runtime or ABI effect.
 #define ABSL_ATTRIBUTE_LIFETIME_BOUND
-#endif
 
 // ABSL_ATTRIBUTE_TRIVIAL_ABI
 // Indicates that a type is "trivially relocatable" -- meaning it can be
